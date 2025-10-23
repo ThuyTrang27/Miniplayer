@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniPlayer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style/Playlist.css">
+</head>
+
+<body data-page="playlist" id="playlist">    
+    <div class="menu-bar">
+        <div class="logo">
+            <img src="../img/logo_wedsite.png" alt="">
+        </div>
+
+        <div class="menu-music">
+            <div class="menu list-icon">
+                <h3>MENU</h3>
+                <div class="TC li"><i class="fa-solid fa-house icon-homepage2 icon"></i>&nbsp;&nbsp;&nbsp;Home</div>
+                <div class="BH li"><i class="fa-solid fa-music icon"></i>&nbsp;&nbsp;&nbsp;Songs</div>
+                <div class="PL li"><i class="fa-solid fa-list icon"></i>&nbsp;&nbsp;&nbsp;Playlist</div>
+                <div class="AB li"><i class="fa-solid fa-circle-info icon"></i>&nbsp;&nbsp;&nbsp;About</div>
+            </div>
+
+            <div class="playlist list-icon">
+                <h3>PLAYLIST</h3>
+                <div class="VietNam li"><i class="fa-solid fa-music icon"></i>&nbsp;&nbsp;&nbsp;V-Pop</div>
+                <div class="HanQuoc li"><i class="fa-solid fa-music icon"></i>&nbsp;&nbsp;&nbsp;K-Pop</div>
+                <div class="TrungQuoc li"><i class="fa-solid fa-music icon"></i>&nbsp;&nbsp;&nbsp;C-Pop</div>
+                <div class="USUK li"><i class="fa-solid fa-music icon"></i>&nbsp;&nbsp;&nbsp;US-UK</div>
+            </div> 
+        </div>
+    </div>
+
+    <div class="content">           
+        <div class="header">
+            <div class="home">
+                <i class="fa-solid fa-house icon-homepage icon"></i>
+                <div class="box-search">
+                    <input type="text" class="input-homepage" placeholder="Tìm kiếm bài hát...">
+                    <i class="fa-solid fa-magnifying-glass icon-search"></i>
+                </div>        
+                <i class="fa-solid fa-user icon-user icon"></i>
+                <p class="user text">Sign-in</p>
+                <i class="fa-solid fa-user icon-user icon"></i>
+                <p class="user text">Sign-up</p>
+            </div>
+
+            <div class="bell-setting">
+                <i class="fa-solid fa-bell icon-bell icon"></i>
+                <i class="fa-solid fa-gear icon-setting icon"></i>        
+            </div>        
+        </div>             
+
+        <div class="content-body">                   
+            <div class="body">
+                <div class="Nav-bar">
+                    <div class="list-page">
+                        <div class="TC li" >Home</div>
+                        <div class="BH li">Songs</div>
+                        <div class="PL li" style="color: red;" >Playlist</div>
+                        <div class="AB li">About</div>
+                    </div>
+                </div>
+
+                <div class="music-section">
+                    <h2>V-Pop</h2>
+                    <div id="V-Pop" class="playlist-container"></div>
+                </div>
+
+                <div class="music-section">
+                    <h2>K-Pop</h2>
+                    <div id="K-Pop" class="playlist-container"></div>
+                </div>
+
+                <div class="music-section">
+                    <h2>C-Pop</h2>
+                    <div id="C-Pop" class="playlist-container"></div>
+                </div>                  
+
+                <div class="music-section">
+                    <h2>US-UK</h2>
+                    <div id="US-UK" class="playlist-container"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <img src="../img/logo_wedsite.png" alt="">
+        <div class="full-text">
+            <div class="text-content">
+                <h3 class="text-name">MiniPlayer</h3>
+                <p>Dự án của nhóm Trio T</p>
+                <p><b>Thành viên:</b></p>
+                <p>Nguyễn Thùy Trang</p>
+                <p>Nguyễn Thu Trang</p>
+                <p>ALăng Thị Thơm</p>
+                <p><b>Passerelles Numériques Vietnam - PNV</b></p>
+            </div>
+            <div class="text-content">
+                <p><b>Email:</b> trang.nguyenthuy27@student.passerellesnumeriques.org</p>
+                <p><b>Phone:</b> 0347395104</p>
+                <p><b>Địa chỉ:</b> Quận Sơn Trà, TP.Đà Nẵng</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../Script/index.js"></script>
+    <script src="../Script/auth.js"></script>
+    <!-- <script src="../Script/nav.js"></script> -->
+    <script src="../Script/genre-nav.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Search results</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../style/Player.css">
+</head>
+<body data-page="search" id="search">
+  <div class="menu-bar">
+    <div class="logo"><img src="../img/logo_wedsite.png" alt=""></div>
+    <div class="menu-music">
+        <div class="menu list-icon">
+          <h3>MENU</h3>
+            <div class="Trangchu li"><i class="fa-solid fa-house icon-homepage2 icon">&nbsp;&nbsp;&nbsp;</i>Home</div>
+            <div class="Baihat li"><i class="fa-solid fa-music icon">&nbsp;&nbsp;&nbsp;</i>Songs</div>
+            <div class="Danhsach li"><i class="fa-solid fa-list icon">&nbsp;&nbsp;&nbsp;</i>Playlist</div>
+            <div class="Timhieu li"><i class="fa-solid fa-circle-info icon">&nbsp;&nbsp;&nbsp;</i>About</div>
+        </div>
+        <div class="playlist list-icon">
+          <h3>PLAYLIST</h3>
+            <div class="VietNam li" ><i class="fa-solid fa-music icon">&nbsp;&nbsp;&nbsp;</i>V-Pop</div>
+            <div class="HanQuoc li" ><i class="fa-solid fa-music icon">&nbsp;&nbsp;&nbsp;</i>K-Pop</div>
+            <div class="TrungQuoc li" ><i class="fa-solid fa-music icon">&nbsp;&nbsp;&nbsp;</i>C-Pop</div>
+            <div class="USUK li" ><i class="fa-solid fa-music icon">&nbsp;&nbsp;&nbsp;</i>US-UK</div>
+        </div>
+    </div>
+  </div>
+  <div class="content">           
+        <div class="header">
+            <div class="home">
+                <i class="fa-solid fa-house icon-homepage icon"></i>
+                <div class="box-search">
+                    <input type="text" class="input-homepage" placeholder="Tìm kiếm bài hát...">
+                    <i class="fa-solid fa-magnifying-glass icon-search"></i>
+                </div>        
+                <i class="fa-solid fa-user icon-user icon"></i>
+                <p class="user text ">Sign-in</p>
+                <i class="fa-solid fa-user icon-user icon"></i>
+                <p class="user text ">Sign-up</p>
+            </div>
+            <div class="bell-setting">
+                <i class="fa-solid fa-bell icon-bell icon" ></i>
+                <i class="fa-solid fa-gear icon-setting icon"></i>        
+            </div>        
+        </div>               
+      
+  <div style="padding:16px;max-width:980px;margin:0 auto">
+    <h2>Kết quả tìm kiếm</h2>   
+    <div id="search-results" style="display:block; width:600px;"></div>
+  </div>
+</div>
+  <script src="../Script/index.js"></script>
+  <script src="../Script/auth.js"></script>
+  <script src="../Script/nav.js"></script>
+  <script src="../Script/genre-nav.js"></script>
+  <script>
+    (async function(){
+      try{
+        const params = new URLSearchParams(location.search);
+        const q = params.get('q') || '';
+        const input = document.querySelector('.input-homepage'); if (input) { input.value = decodeURIComponent(q); }
+        const btn = document.getElementById('search-go'); if (btn && input) btn.addEventListener('click', ()=>{ location.href = 'Search.html?q=' + encodeURIComponent(input.value||''); });
+        // wait for helper to be available
+        if (!window.findMatches) {
+          // small delay to allow index.js to run if it wasn't parsed yet
+          await new Promise(r=>setTimeout(r,120));
+        }
+        const container = document.getElementById('search-results');
+        const hits = await window.findMatches(decodeURIComponent(q||''));
+        window.renderHits(container, hits, { large: true });
+      }catch(e){ console.error('search page init failed', e); }
+    })();
+  </script>
+</body>
+</html>

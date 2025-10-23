@@ -1,0 +1,268 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.t {
+  font-family: "Poppins", sans-serif;
+}
+body {
+  display: grid;
+  grid-template-columns: 250px 1fr; /* menu 1 cột, nội dung 1 cột */
+  height: 100vh;
+  background-color: #111;
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+}
+.header {
+  position: sticky;
+  top: 0;
+  height: 60px;
+  background-color: black;
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+  z-index: 10; /* nổi lên trên */
+}
+.icon {
+  color: white;
+}
+.text{
+    color:aliceblue;
+}
+.input-homepage {
+    width: 500px;
+    height: 30px;
+}
+.home {
+  margin-left: 30%;
+  display: flex;
+  align-items: center;
+  padding: 0 25px;
+}
+.icon-homepage,
+.icon-bell,
+.icon-user {
+  margin-right: 25px;
+  margin-top: 1px;
+}
+.user {
+  position:relative;
+  right: 15px;
+  margin-top: 8px;
+}
+.box-search {
+  position: relative;
+  width: 250px;
+  margin-right: 25px;
+  margin-top: 1px;
+}
+
+.box-search input {
+  width: 100%;
+  padding: 10px 40px 10px 10px;
+  border: 1px solid #ccc;
+}
+
+.box-search i {
+  position: absolute;
+  right: 10px;    
+  top: 40%;
+  transform: translateY(-50%);
+  color: #ccc;
+  pointer-events: none; 
+  padding-bottom: 0px;
+  margin-top: 4px;
+}
+.bell-setting {
+  margin-left: 120px;
+}
+.content {
+  overflow-y: auto;
+  height: 100vh;
+  background-color: #1b1b1b;
+}
+.menu-music {
+  margin-left: 20%;
+}
+.menu-music h3  {
+  margin-bottom: 10px;
+}
+.menu-music li {
+  margin-bottom: 7px;
+}
+
+.list-page {
+  display:flex;
+  flex-direction: row;
+  list-style-type:none;
+  color: white;
+  margin-top: 20px;
+  margin-left: 20px;
+}
+.list-page .li {
+  font-size: 20px;
+  margin-left: 25px;
+  cursor: pointer;
+}
+.list-page .li:hover {
+  color: red;
+}
+
+.menu-bar {
+  background-color: rgb(4, 117, 80);
+  position: sticky;
+  top: 0;
+  height: 100vh; /* đảm bảo nó luôn chiếm toàn chiều cao */
+  overflow-y: auto;
+  padding: 20px;
+}
+.logo img {
+  width: 200px;
+  margin-bottom: 20px;
+}
+.menu,
+.playlist {
+  margin-left: 20px;
+}
+.menu .li,
+.playlist .li {
+  list-style-type:none;
+  cursor: pointer;
+}
+.playlist-container {
+  display:flex;
+  flex-direction: row;
+
+}
+.music-section2 {
+    width: 93%;
+    height: 350px;
+    background-color: #545455;
+    border-radius:  10px;
+    -webkit-border-radius:  10px;
+    -moz-border-radius:  10px;
+    -ms-border-radius:  10px;
+    -o-border-radius:  10px;
+    margin-top: 30px;
+    margin-left: 30px;
+    background: #545455;
+    border-radius: 10px;
+    margin: 20px;
+    padding: 10px;
+    
+}
+.type-section {
+  display: flex;
+  flex-direction: row;
+  justify-content:space-around; 
+}
+.about-content,
+.music-section {
+  width: 93%;
+  background-color: #545455;
+  border-radius:  10px;
+  -webkit-border-radius:  10px;
+  -moz-border-radius:  10px;
+  -ms-border-radius:  10px;
+  -o-border-radius:  10px;
+  margin-top: 30px;
+  margin-left: 30px;
+  background: #545455;
+  border-radius: 10px;
+  margin: 20px;
+  padding: 10px;
+  
+} 
+.music-section2 h2,
+.music-section h2 {
+  margin-left: 10px;
+  padding-top: 10px;
+}
+.music-section2 h4 {
+  margin-top: 10px;
+}
+
+h2 {
+  margin: 20px 0 15px;
+  font-size: 22px;
+}
+.playlist-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr); /* 4 card mỗi dòng */
+  gap: 10px; /* khoảng cách giữa các card */
+  justify-items: center; /* căn giữa mỗi card */
+  margin-bottom: 40px;
+}
+.typeofmusic {
+  background-color: #1d1d1d;
+  border-radius: 16px;
+  padding: 10px;
+  text-align: center;
+  transition: 0.3s;
+  cursor: pointer;
+  width: 180px;
+  height: 240px; /* cố định chiều cao để đều */
+}
+.song-card {
+  background-color: #1d1d1d;
+  border-radius: 16px;
+  padding: 10px;
+  text-align: center;
+  transition: 0.3s;
+  cursor: pointer;
+  width: 180px;
+  height: 270px; /* cố định chiều cao để đều */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* phân bố phần ảnh và text */
+}
+.typeofmusic:hover,
+.song-card:hover {
+  background-color: #272727;
+  transform: translateY(-5px);
+}
+.typeofmusic img,
+.song-card img {
+  width: 100%;
+  height: 160px; /* cố định chiều cao ảnh */
+  object-fit: cover; /* ảnh không méo */
+  border-radius: 12px;
+}
+
+.song-card h4 {
+  font-size: 13px;
+  margin: 7px 0 5px;
+  white-space: normal;
+  overflow: visible; 
+  text-overflow: unset;
+  line-height: 1.4;
+  font-weight: bold;
+  color: #fff;
+}
+
+.song-card p {
+  font-size: 11px;
+  color: #bbb;
+  margin: 0;
+  padding-bottom: 10px;
+}
+.footer {
+  height: 350px;
+  background-color: white;
+}
+.footer img {
+  width: 15%;
+}
+.full-text {
+  display:flex;
+  flex-direction: row;
+}
+.text-content {
+  padding-bottom:30px;
+  margin-left: 40px;
+}
+.text-name,
+.footer p {
+  color: black;
+}

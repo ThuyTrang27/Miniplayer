@@ -1,0 +1,49 @@
+.form-signup {
+  width: 1000px;
+  height: 800px;
+  background-color: #272727;
+  margin-top: 50px;
+  margin-left: 200px;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 25px;
+}
+.form-content {
+  
+}
+.group {
+  margin-top: 40px;
+  margin-left: 80px;
+}
+.form-content h2 {
+  color: white;
+  font-size: 30px;
+  margin-left: 40px;
+  margin-top: 40px;
+}
+.form-content h4 {
+  color: rgb(10, 124, 216);
+  margin-left: 60px;
+  margin-top: 40px;
+}
+.sign-up {
+  background-color: white;
+  overflow-y: auto;
+}
+
+.background-img {  
+  background-image: url("https://cdn.tgdd.vn//GameApp/1347401//30-800x1422.jpg");
+}
+.form-control{
+  width: 450px;
+}
+.about-content-text {
+  margin-left: 25px;
+  line-height: 1.8;
+}
+.email,
+.phone {
+   text-decoration: none;
+   color:rgb(4, 131, 80);
+   font-weight: 600;
+}

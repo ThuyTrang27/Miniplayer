@@ -1,0 +1,41 @@
+/* ========== GLOBAL CSS ========== */
+
+/* Reset cơ bản */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #111;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+/* Menu chung */
+.menu-bar {
+  background-color: #006b52;
+  color: white;
+  width: 260px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-y: auto;
+}
+
+.menu-bar .li {
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.menu-bar .li:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+/* Phần nội dung chính */
+.content-body {
+  margin-left: 260px;
+  padding: 20px;
+}

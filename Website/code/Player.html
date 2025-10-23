@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test Player</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="../style/Player.css">
+</head>
+<body>
+ <div class="menu-bar">
+                <div class="logo">
+                    <img src="../img/logo_wedsite.png" alt="" class="">
+                </div>
+                <div class="menu-music">
+                    <div class="menu list-icon">
+                        <h3>MENU</h3>
+                            <div class="Trangchu li"><i class="fa-solid fa-house icon-homepage2 icon">&nbsp;&nbsp;&nbsp;</i>Home</div>
+                            <div class="Baihat li"><i class="fa-solid fa-music icon">&nbsp;&nbsp;&nbsp;</i>Songs</div>
+                            <div class="Danhsach li"><i class="fa-solid fa-list icon">&nbsp;&nbsp;&nbsp;</i>Playlist</div>
+                            <div class="Timhieu li"><i class="fa-solid fa-circle-info icon">&nbsp;&nbsp;&nbsp;</i>About</div>
+                    </div>
+                    <div class="playlist list-icon">
+                        <h3>PLAYLIST</h3>
+                            <div class="VietNam li" ><i class="fa-solid fa-music icon">&nbsp;&nbsp;&nbsp;</i>V-Pop</div>
+                            <div class="HanQuoc li" ><i class="fa-solid fa-music icon">&nbsp;&nbsp;&nbsp;</i>K-Pop</div>
+                            <div class="TrungQuoc li" ><i class="fa-solid fa-music icon">&nbsp;&nbsp;&nbsp;</i>C-Pop</div>
+                            <div class="USUK li" ><i class="fa-solid fa-music icon">&nbsp;&nbsp;&nbsp;</i>US-UK</div>
+                    </div>
+                </div>
+            </div> 
+    <div class="content">           
+        <div class="header">
+            <div class="home">
+                <i class="fa-solid fa-house icon-homepage icon"></i>
+                <div class="box-search">
+                    <input type="text" class="input-homepage" placeholder="Tìm kiếm bài hát...">
+                    <i class="fa-solid fa-magnifying-glass icon-search"></i>
+                </div>        
+                <i class="fa-solid fa-user icon-user icon"></i>
+                <p class="user text ">Sign-in</p>
+                <i class="fa-solid fa-user icon-user icon"></i>
+                <p class="user text ">Sign-up</p>
+            </div>
+            <div class="bell-setting">
+                <i class="fa-solid fa-bell icon-bell icon" ></i>
+                <i class="fa-solid fa-gear icon-setting icon"></i>        
+            </div>        
+        </div>             
+            <div class="content-body">                   
+                <div class="body">
+                    <div class="Nav-bar">
+                        <div class="list-page">
+                            <div class="TC li" style="color: red;">Home</div>
+                            <div class="BH li">Songs</div>
+                            <div class="PL li">Playlist</div>
+                            <div class="AB li">About</div>
+                        </div>
+                    </div>
+
+  <div class="song-detail-container">
+  <div class="song-cover">
+    <img id="song-image" src="" alt="Song cover">
+  </div>
+  <div class="song-info">
+    <h2 id="song-title"></h2>
+    <p id="song-artist"></p>
+    <p id="song-genre"></p>
+    <p id="song-year"></p>
+    <p id="song-time"></p>
+    <p id="song-likes"></p>
+  </div>
+  <div class="song-extra">
+    <p id="meta-genre"></p>
+    <p id="meta-year"></p>
+    <p id="meta-time"></p>
+    <p id="meta-likes"></p>
+    <p id="meta-date"></p>
+  </div>
+</div>
+<audio id="player-audio" controls></audio>
+<div class="player-controls">
+  <button id="btn-prev">Previous</button>
+  <button id="btn-play">Play</button>
+  <button id="btn-next">Next</button>
+</div>
+<div id="bottom-bar">
+  <img id="bottom-cover" src="" alt="Bottom cover">
+  <div>
+    <p id="bottom-title"></p>
+    <p id="bottom-artist"></p>
+  </div>
+  <button id="bottom-prev">⏮</button>
+  <button id="bottom-play">▶</button>
+  <button id="bottom-next">⏭</button>
+  <div id="bottom-progress-wrap">
+    <div id="bottom-progress"></div>
+  </div>
+  <span id="bottom-current">0:00</span>
+  <span id="bottom-duration">0:00</span>
+</div>
+<div id="player-error" style="display: none;"></div>
+<pre id="player-debug"></pre>
+<div style="padding:8px 16px">
+    <button id="debug-toggle" style="padding:6px 10px;border-radius:6px;border:1px solid #ccc;background:#fff;cursor:pointer">Show debug</button>
+</div>
+<div id="auth-inline-error" style="color:crimson;padding:8px 16px;display:none"></div>
+<pre id="player-debug" style="background:#1e1e1f;color:#e6e6e6;padding:12px;border-radius:6px;overflow:auto;display:none;font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, 'Roboto Mono','Courier New',monospace;font-size:13px;white-space:pre-wrap;position:fixed;top:0;right:0;bottom:0;width:72%;z-index:2000"></pre>
+<script>
+    (function(){
+        const btn = document.getElementById('debug-toggle');
+        const pre = document.getElementById('player-debug');
+        if (!btn || !pre) return;
+        btn.addEventListener('click', ()=>{
+            if (pre.style.display === 'none' || !pre.style.display) { pre.style.display = 'block'; btn.textContent = 'Hide debug'; }
+            else { pre.style.display = 'none'; btn.textContent = 'Show debug'; }
+        });
+
+        // debug is toggled only by the button; player.js will append text but won't auto-open
+    })();
+</script>
+<!-- Bottom player bar (hidden until play) -->
+<div id="bottom-bar" style="position:fixed;left:0;right:0;bottom:0;background:#1a1520;color:#fff;padding:10px 16px;display:none;align-items:center;z-index:999">
+    <img id="bottom-cover" src="" alt="cover" style="width:48px;height:48px;object-fit:cover;border-radius:4px;margin-right:12px">
+    <div style="flex:1;display:flex;flex-direction:column;margin-right:12px">
+        <div id="bottom-title" style="font-weight:600"></div>
+        <div id="bottom-artist" style="font-size:12px;opacity:0.8"></div>
+        <div id="bottom-progress-wrap" style="height:8px;background:rgba(255,255,255,0.12);border-radius:6px;margin-top:8px;position:relative;cursor:pointer">
+            <div id="bottom-progress" style="height:100%;width:0%;background:#fff;border-radius:6px"></div>
+        </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+        <button id="bottom-prev" style="background:none;border:none;color:inherit;font-size:18px">⏮</button>
+        <button id="bottom-play" style="background:none;border:none;color:inherit;font-size:18px">▶</button>
+        <button id="bottom-next" style="background:none;border:none;color:inherit;font-size:18px">⏭</button>
+    </div>
+    <div style="width:80px;text-align:right;font-size:12px;margin-left:12px">
+        <div id="bottom-current">0:00</div>
+        <div id="bottom-duration" style="opacity:0.8">0:00</div>
+    </div>
+</div>
+        <script src="../Script/index.js"></script>
+        <script src="../Script/genre-nav.js"></script>
+        <script src="../Script/auth.js"></script>
+        <!-- <script src="../Script/nav.js"></script> -->
+        <script src="../Script/player.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../style/Sign-up.css">
+
+</head>
+<body data-page="sign-up" id="sign-up">
+    <div class="form-signup">
+        <div class="background-img"></div>
+        <div class="form-content">
+            <h2>Chào mừng đến với MiniPlayer</h2>
+            <h4>Hãy đăng ký ngay nào!</h4>
+             <form id="signup-form" class="was-validated group">
+                <div class="form-group">
+                    <label for="uname">User name:</label>
+                    <input type="text" class="form-control" id="uname" placeholder="Enter username" name="username" required>
+                    <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+                </div>
+                <div class="form-group">
+                    <label for="fullname">Full name:</label>
+                    <input type="text" class="form-control" id="fullname" placeholder="Enter your full name" name="name">
+                </div>
+                <div class="form-group">
+                    <label for="em">Email:</label>
+                    <input type="email" class="form-control" id="em" placeholder="Enter email" name="email" required>
+                    <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+                </div>
+                <div class="form-group">
+                    <label for="pwd">Password:</label>
+                    <input type="password" class="form-control" id="pwd" placeholder="Enter password" name="password" required>
+                    <div class="valid-feedback">Valid.</div>
+                    <div class="invalid-feedback">Please fill out this field.</div>
+                </div>
+                <div class="form-group">
+                    <label for="yp">Số điện thoại:</label>
+                    <input type="text" class="form-control" id="yp" placeholder="Enter your phone" name="phone">
+                </div>
+                <div class="form-group form-check">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" name="remember" required> I agree to the Terms and Conditions.
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Check this checkbox to continue.</div>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">Đăng ký</button>
+            </form>
+</div>
+        </div>       
+    </div>
+    <script src="../Script/auth.js"></script>
+    <script src="../Script/nav.js"></script>
+    <script>
+      // Sign-up page submit handler: POST to mock API, save currentUser and redirect
+      (function(){
+        const USER_API = 'https://68e491038e116898997c170f.mockapi.io/User';
+        const form = document.getElementById('signup-form');
+        if (!form) return;
+        form.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          // simple gather
+          const data = {
+            username: (form.querySelector('[name="username"]').value || '').trim(),
+            name: (form.querySelector('[name="name"]').value || '').trim(),
+            email: (form.querySelector('[name="email"]').value || '').trim(),
+            password: (form.querySelector('[name="password"]').value || ''),
+            phone: (form.querySelector('[name="phone"]').value || '').trim()
+          };
+          try {
+            const res = await fetch(USER_API, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) });
+            if (!res.ok) throw new Error('Signup failed');
+            const user = await res.json();
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            // update header if auth.js is loaded
+            if (typeof renderAccountState === 'function') renderAccountState();
+            // redirect to homepage
+            window.location.href = 'Homepage.html';
+          } catch (err) {
+            console.error('Signup error', err);
+            alert('Đăng ký thất bại. Vui lòng thử lại.');
+          }
+        });
+      })();
+    </script>
+</body>
+</html>

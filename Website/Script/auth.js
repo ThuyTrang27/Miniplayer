@@ -1,0 +1,196 @@
+// Simple auth helper: sign-up, sign-in using mock API and update UI
+const USER_API = 'https://68e491038e116898997c170f.mockapi.io/User';
+
+function el(html) {
+  const tpl = document.createElement('div'); tpl.innerHTML = html.trim(); return tpl.firstChild;
+}
+
+function createAuthModal() {
+  const modal = el(`
+    <div id="auth-modal" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.5);z-index:2000">
+      <!-- inner container transparent: individual forms provide their own styled panels -->
+      <div style="background:transparent;padding:0;border-radius:8px;max-width:1000px;width:100%;display:flex;align-items:center;justify-content:center;position:relative">
+        <button id="auth-close" style="position:absolute;top:10px;right:10px;border:none;background:transparent;color:#fff;font-size:20px;cursor:pointer">✖</button>
+        <h3 id="auth-title" style="display:none">Sign in</h3>
+        <div id="auth-error" style="color:crimson;display:none;margin-bottom:8px"></div>
+        <form id="auth-form">
+          <div id="auth-fields"></div>
+          <div style="margin-top:12px;text-align:right">
+            <button type="submit" id="auth-submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  `);
+  document.body.appendChild(modal);
+  return modal;
+}
+
+function showAuth(type) {
+  // type: 'signup' or 'signin'
+  const modal = document.getElementById('auth-modal') || createAuthModal();
+  const title = modal.querySelector('#auth-title');
+  const fields = modal.querySelector('#auth-fields');
+  const err = modal.querySelector('#auth-error');
+  err.style.display = 'none'; err.textContent = '';
+  fields.innerHTML = '';
+  if (type === 'signup') {
+    title.textContent = 'Sign up';
+    fields.appendChild(el('<div><label>Username</label><br><input name="username" required></div>'));
+    fields.appendChild(el('<div><label>Full name</label><br><input name="name" required></div>'));
+    fields.appendChild(el('<div><label>Email</label><br><input name="email" type="email" required></div>'));
+    fields.appendChild(el('<div><label>Password</label><br><input name="password" type="password" required></div>'));
+  } else {
+    title.textContent = 'Sign in';
+    // inject scoped signin form (uses name="email" but accepts username or email on server-side matching)
+    fields.innerHTML = `
+      <style id="auth-signin-css"> 
+        #auth-modal .login-container{height:100vh;background:transparent;display:flex;align-items:center;justify-content:center}
+  #auth-modal .login-inner{background: linear-gradient(135deg, #1e1e2f, #2c2c54); padding:36px 34px;border-radius:16px;width:420px;color:#fff;box-shadow:0 12px 40px rgba(0,0,0,0.45);position:relative}
+        #auth-modal .login-inner .logo{width:90px;height:90px;border-radius:50%;margin:0 130px 20px;object-fit:cover;border:2px solid #fff}
+        #auth-modal .login-inner h2{font-size:22px;margin:6px 0 18px}
+        #auth-modal .login-inner input{width:100%;padding:12px;margin-bottom:14px;border:none;border-radius:10px;background:rgba(255,255,255,0.06);color:#fff}
+        #auth-modal #auth-submit{width:100%;padding:12px;border:none;border-radius:10px;background:#5e60ce;color:#fff;font-weight:600;cursor:pointer;margin-top:8px}
+        #auth-modal .login-inner .extra{margin-top:12px;font-size:13px}
+        #auth-modal .login-inner a{color:#4ea8de}
+        /* close X styles already set on the outer close button; ensure it sits above */
+        #auth-close{z-index:2100}
+      </style>
+        <div class="login-container">
+        <div class="login-inner">
+          <!-- inner close button (top-right of the panel) -->
+          <button class="auth-inner-close" aria-label="Close" style="position:absolute;top:10px;right:10px;border:none;background:transparent;color:#fff;font-size:18px;cursor:pointer">✖</button>
+          <img src="../img/logo_wedsite.png" alt="Logo" class="logo">
+            <h2>Đăng Nhập Vào MiniPlayer</h2>
+            <input type="text" id="username" name="email" placeholder="Tên đăng nhập hoặc Email" required>
+            <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
+          <div class="extra"><p>Bạn chưa có tài khoản? <a href="Sign-up.html">Đăng ký nhanh</a></p></div>
+        </div>
+      </div>
+    `;
+  }
+  // set submit button text depending on type
+  const submitBtn = modal.querySelector('#auth-submit');
+  if (submitBtn) submitBtn.textContent = (type === 'signup') ? 'Đăng ký' : 'Đăng nhập';
+  modal.style.display = 'flex';
+  const close = modal.querySelector('#auth-close');
+  close.onclick = () => { modal.style.display = 'none'; };
+  // inner close button inside panel (if present)
+  const innerClose = modal.querySelector('.auth-inner-close');
+  if (innerClose) innerClose.onclick = () => { modal.style.display = 'none'; };
+
+  const form = modal.querySelector('#auth-form');
+  form.onsubmit = async (e) => {
+    e.preventDefault();
+    err.style.display = 'none'; err.textContent = '';
+    const data = Object.fromEntries(new FormData(form).entries());
+    // Diagnostic log to help debug form issues
+    try{ console.log('[auth] submit', { type, data }); }catch(e){}
+    try {
+      if (type === 'signup') {
+        // create user via POST
+        const res = await fetch(USER_API, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) });
+        if (!res.ok) throw new Error('Signup failed');
+        const user = await res.json();
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        modal.style.display = 'none';
+        renderAccountState();
+        try{ window.dispatchEvent(new CustomEvent('user-changed')); }catch(e){}
+      } else {
+        // signin: fetch users and match (accept username or email)
+        const res = await fetch(USER_API);
+        if (!res.ok) throw new Error('Failed to fetch users');
+        const list = await res.json();
+        const found = list.find(u => ((u.email === data.email) || (u.username === data.email)) && (u.password === data.password));
+        if (!found) { err.style.display='block'; err.textContent = 'Invalid credentials'; return; }
+        localStorage.setItem('currentUser', JSON.stringify(found));
+        modal.style.display = 'none';
+        renderAccountState();
+        try{ window.dispatchEvent(new CustomEvent('user-changed')); }catch(e){}
+      }
+    } catch (err2) {
+      console.error('[auth] submit error', err2);
+      const msg = (err2 && err2.message) ? ('Error: ' + err2.message) : 'An error occurred. See console.';
+      err.style.display = 'block';
+      err.textContent = msg;
+      // also show inline error on the page if present (useful when modal cannot open)
+      try{
+        const inline = document.getElementById('auth-inline-error');
+        if (inline) { inline.style.display = 'block'; inline.textContent = msg; }
+      }catch(_){ }
+    }
+  };
+}
+
+function renderAccountState() {
+  const raw = localStorage.getItem('currentUser');
+  const headerHome = document.querySelector('.home');
+  if (!headerHome) return;
+  // ensure styles for account area are injected once
+  if (!document.getElementById('auth-css')) {
+    const s = document.createElement('style'); s.id = 'auth-css';
+    s.textContent = `
+      #account-area { font-family: Arial, sans-serif; color: #fff; }
+      #account-area .acct-avatar { width:28px; height:28px; border-radius:50%; object-fit:cover; }
+      #account-area #acct-name { font-weight:600; margin-left:4px; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:180px; display:inline-block; }
+      .acct-logout-btn { background:rgb(4, 117, 80); color:#111; border:none; padding:6px 10px; border-radius:6px; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.2); margin-left:6px; }
+      .acct-logout-btn:hover { transform:translateY(-1px); box-shadow:0 4px 8px rgba(0,0,0,0.25); }
+    `;
+    document.head.appendChild(s);
+  }
+  // remove existing account area if any
+  const existing = document.getElementById('account-area'); if (existing) existing.remove();
+  const container = document.createElement('div');
+  container.id = 'account-area';
+  // display as inline-flex so avatar, name and logout sit on one line
+  container.style.display = 'inline-flex';
+  container.style.alignItems = 'center';
+  container.style.gap = '8px';
+  container.style.marginLeft = '12px';
+
+  if (raw) {
+    const user = JSON.parse(raw);
+    // hide sign-in/sign-up text and their small icon siblings (the white icons)
+    document.querySelectorAll('.user.text').forEach(n => {
+      if (n.textContent.trim().toLowerCase().includes('sign')) {
+        n.style.display = 'none';
+        const prev = n.previousElementSibling;
+        if (prev && prev.classList && prev.classList.contains('icon-user')) prev.style.display = 'none';
+      }
+    });
+
+    container.innerHTML = `
+      <img src="../img/logo_wedsite.png" alt="account" class="acct-avatar">
+      <i class="fa-solid fa-circle-user"></i>
+      <span id="acct-name">${user.username || user.name || user.email}</span>
+      <button id="acct-logout" class="acct-logout-btn">Logout</button>
+    `;
+    headerHome.appendChild(container);
+    const btn = document.getElementById('acct-logout'); btn.onclick = () => { localStorage.removeItem('currentUser'); renderAccountState(); };
+    // dispatch event so other UI (like comments) can hide/show
+    document.getElementById('acct-logout').addEventListener('click', ()=>{ try{ window.dispatchEvent(new CustomEvent('user-changed')); }catch(e){} });
+  } else {
+    // show sign-in/sign-up text and icons again
+    document.querySelectorAll('.user.text').forEach(n => {
+      n.style.display = 'inline-block';
+      const prev = n.previousElementSibling;
+      if (prev && prev.classList && prev.classList.contains('icon-user')) prev.style.display = 'inline-block';
+    });
+  }
+}
+
+// Attach click listeners to any sign-in / sign-up elements
+function attachAuthLinks() {
+  document.querySelectorAll('.user.text').forEach(elm => {
+    const txt = elm.textContent.trim().toLowerCase();
+    if (txt.includes('sign-up') || txt.includes('signup') || txt.includes('sign up')) {
+      // navigate to dedicated sign-up page if present
+      elm.style.cursor='pointer'; elm.onclick = () => { window.location.href = 'Sign-up.html'; };
+    }
+    if (txt.includes('sign-in') || txt.includes('signin') || txt.includes('sign in')) {
+      elm.style.cursor='pointer'; elm.onclick = () => showAuth('signin');
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => { attachAuthLinks(); renderAccountState(); });
