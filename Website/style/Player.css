@@ -134,10 +134,13 @@ body {
   display: flex;
   gap: 2rem;
   align-items: flex-start;
+  width: 900px;
+  height: 400px;
+  margin-bottom: 0;
 }
 
 .song-cover img {
-  width: 300px;
+  width: 250px;
   border-radius: 10px;
 }
 
@@ -187,4 +190,72 @@ body {
 .song-detail-container {
   margin-top: 50px;
   margin-left: 20px;
+}
+
+/* Comment */
+.comment-container {
+  width: auto;
+  background-color: #2c2c2c;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #000;
+  position: relative;
+  top: -100px; /* đẩy cả khung bình luận lên 40px */
+}
+
+.comment-container h2 {
+  margin-bottom: 15px;
+  width:auto;
+}
+
+.comment-box {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+#comment-input {
+  width: 100%;
+  height: 80px;
+  border-radius: 8px;
+  border: none;
+  padding: 10px;
+  resize: none;
+  background-color: #3a3a3a;
+  color: white;
+}
+
+#comment-input:focus {
+  outline: 2px solid #9b59b6;
+}
+
+#comment-btn {
+  background-color: #9b59b6;
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.3s;
+  width: 100px;
+}
+
+#comment-btn:hover {
+  background-color: #b377d1;
+}
+
+.comment {
+  background-color: #444;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.comment strong {
+  color: #ff9f43;
+}
+
+.comment p {
+  margin-top: 5px;
 }

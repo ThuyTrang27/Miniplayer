@@ -47,7 +47,7 @@ function createSongCard(song, opts = {}) {
   // Khi click vào bài hát → lưu vào localStorage → chuyển sang Player
   card.addEventListener("click", () => {
     localStorage.setItem("currentSong", JSON.stringify(s));
-    window.location.href = `Player.html?id=${s.id}`;
+    window.location.href = `player.html?id=${s.id}`;
   });
 
   return card;

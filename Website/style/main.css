@@ -1,41 +1,138 @@
-/* ========== GLOBAL CSS ========== */
 
-/* Reset cơ bản */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background-color: #111;
-  color: white;
-  font-family: Arial, sans-serif;
-}
-
-/* Menu chung */
-.menu-bar {
-  background-color: #006b52;
-  color: white;
-  width: 260px;
-  height: 100vh;
+/* ==== AUTH MODAL (SIGN-IN / SIGN-UP) ==== */
+#auth-modal {
   position: fixed;
-  top: 0;
-  left: 0;
-  overflow-y: auto;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2000;
 }
 
-.menu-bar .li {
-  padding: 8px 12px;
+#auth-modal .login-container {
+  height: 100vh;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#auth-modal .login-inner {
+  background: linear-gradient(135deg, #1e1e2f, #2c2c54);
+  padding: 36px 34px;
+  border-radius: 16px;
+  width: 420px;
+  color: #fff;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+  position: relative;
+}
+
+#auth-modal .login-inner .logo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  margin: 0 130px 20px;
+  object-fit: cover;
+  border: 2px solid #fff;
+}
+
+#auth-modal .login-inner h2 {
+  font-size: 22px;
+  margin: 6px 0 18px;
+}
+
+#auth-modal .login-inner input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 14px;
+  border: none;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+#auth-modal #auth-submit {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #5e60ce;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+#auth-modal #auth-submit:hover {
+  background: #747bff;
+}
+
+#auth-modal .login-inner .extra {
+  margin-top: 12px;
+  font-size: 13px;
+  text-align: center;
+}
+
+#auth-modal .login-inner a {
+  color: #4ea8de;
+}
+
+#auth-modal .auth-inner-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 18px;
   cursor: pointer;
 }
 
-.menu-bar .li:hover {
-  background-color: rgba(255,255,255,0.1);
+#auth-close {
+  z-index: 2100;
 }
 
-/* Phần nội dung chính */
-.content-body {
-  margin-left: 260px;
-  padding: 20px;
+/* ==== ACCOUNT INFO (KHI ĐÃ ĐĂNG NHẬP) ==== */
+#account-area {
+  font-family: Arial, sans-serif;
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 12px;
+}
+
+#account-area .acct-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+#account-area #acct-name {
+  font-weight: 600;
+  margin-left: 4px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+  display: inline-block;
+}
+
+.acct-logout-btn {
+  background: rgb(4, 117, 80);
+  color: #111;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  margin-left: 6px;
+}
+
+.acct-logout-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
 }

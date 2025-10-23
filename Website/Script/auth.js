@@ -60,10 +60,11 @@ function showAuth(type) {
         <div class="login-inner">
           <!-- inner close button (top-right of the panel) -->
           <button class="auth-inner-close" aria-label="Close" style="position:absolute;top:10px;right:10px;border:none;background:transparent;color:#fff;font-size:18px;cursor:pointer">✖</button>
-          <img src="../img/logo_wedsite.png" alt="Logo" class="logo">
-            <h2>Đăng Nhập Vào MiniPlayer</h2>
+          <img src="../img/logo_white.png" alt="Logo" class="logo">
+          <h2>Đăng Nhập Vào MiniPlayer</h2>
             <input type="text" id="username" name="email" placeholder="Tên đăng nhập hoặc Email" required>
             <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
+            <div style="margin-top:6px"><button type="submit" id="auth-submit">Đăng nhập</button></div>
           <div class="extra"><p>Bạn chưa có tài khoản? <a href="Sign-up.html">Đăng ký nhanh</a></p></div>
         </div>
       </div>
@@ -84,8 +85,6 @@ function showAuth(type) {
     e.preventDefault();
     err.style.display = 'none'; err.textContent = '';
     const data = Object.fromEntries(new FormData(form).entries());
-    // Diagnostic log to help debug form issues
-    try{ console.log('[auth] submit', { type, data }); }catch(e){}
     try {
       if (type === 'signup') {
         // create user via POST
@@ -95,7 +94,6 @@ function showAuth(type) {
         localStorage.setItem('currentUser', JSON.stringify(user));
         modal.style.display = 'none';
         renderAccountState();
-        try{ window.dispatchEvent(new CustomEvent('user-changed')); }catch(e){}
       } else {
         // signin: fetch users and match (accept username or email)
         const res = await fetch(USER_API);
@@ -106,18 +104,11 @@ function showAuth(type) {
         localStorage.setItem('currentUser', JSON.stringify(found));
         modal.style.display = 'none';
         renderAccountState();
-        try{ window.dispatchEvent(new CustomEvent('user-changed')); }catch(e){}
+        window.location.href = "Homepage.html";
       }
     } catch (err2) {
-      console.error('[auth] submit error', err2);
-      const msg = (err2 && err2.message) ? ('Error: ' + err2.message) : 'An error occurred. See console.';
-      err.style.display = 'block';
-      err.textContent = msg;
-      // also show inline error on the page if present (useful when modal cannot open)
-      try{
-        const inline = document.getElementById('auth-inline-error');
-        if (inline) { inline.style.display = 'block'; inline.textContent = msg; }
-      }catch(_){ }
+      console.error(err2);
+      err.style.display='block'; err.textContent = 'An error occurred. See console.';
     }
   };
 }
@@ -166,9 +157,11 @@ function renderAccountState() {
       <button id="acct-logout" class="acct-logout-btn">Logout</button>
     `;
     headerHome.appendChild(container);
-    const btn = document.getElementById('acct-logout'); btn.onclick = () => { localStorage.removeItem('currentUser'); renderAccountState(); };
-    // dispatch event so other UI (like comments) can hide/show
-    document.getElementById('acct-logout').addEventListener('click', ()=>{ try{ window.dispatchEvent(new CustomEvent('user-changed')); }catch(e){} });
+    const btn = document.getElementById('acct-logout'); btn.onclick = () => {
+      localStorage.removeItem('currentUser');
+      renderAccountState()
+      window.location.href = "Homepage.html";;
+    };
   } else {
     // show sign-in/sign-up text and icons again
     document.querySelectorAll('.user.text').forEach(n => {
