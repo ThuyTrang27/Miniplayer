@@ -1,11 +1,13 @@
-// player.js — simple player page logic
 const API_URL = "https://68e491038e116898997c170f.mockapi.io/Song";
 
+//Hàm qs(name) dùng để lấy giá trị của một tham số trong URL.
+//Nó giúp bạn đọc dữ liệu mà người dùng truyền qua đường dẫn, ví dụ như ID, tên, từ khóa tìm kiếm,...
 function qs(name) {
   const params = new URLSearchParams(window.location.search);
   return params.get(name);
 }
 
+//Hàm normalize() dùng để chuẩn hóa (đồng nhất) dữ liệu nhận được từ nhiều nguồn khác nhau về cùng một dạng chuẩn.
 function normalize(raw) {
   if (!raw) return null;
   return {
@@ -15,7 +17,7 @@ function normalize(raw) {
     Img: raw.Img || raw.img || '',
     Url: raw.Url || raw.url || raw.Audio || raw.audio || '' ,
     Times: raw.Times || raw.times || raw.Count || raw.count || '',
-  Count: raw.Count || raw.count || raw.Times || raw.times || '',
+    Count: raw.Count || raw.count || raw.Times || raw.times || '',
     Genre: raw.Genre || raw.genre || '',
     Year: raw.Year || raw.year || '',
     Likes: raw.Likes || raw.Like || raw.likes || 0,
@@ -23,6 +25,8 @@ function normalize(raw) {
   };
 }
 
+//renderSong(song) dùng để hiển thị thông tin chi tiết của một bài hát lên trang web — 
+// bao gồm ảnh, tên bài hát, ca sĩ, thể loại, năm phát hành, số lượt nghe, lượt thích, và phát nhạc bằng <audio>.
 function renderSong(song) {
   if (!song) return;
   document.getElementById('song-image').src = song.Img || '';
@@ -50,23 +54,22 @@ function renderSong(song) {
   }
 }
 
+//Hiển thị thông báo lỗi lên giao diện người dùng, đồng thời ghi log lỗi vào console cho lập trình viên xem.
 function showError(msg) {
-  console.error(msg);
-  const el = document.getElementById('player-error');
+  console.error(msg);// thông báo lỗi trên console
+  const el = document.getElementById('player-error'); //thông báo lỗi trên giao diện người dùng
   if (el) { el.textContent = msg; el.style.display = 'block'; }
 }
 
+//dùng để hiển thị thông tin kiểm tra (debug info).
 function showDebug(label, obj) {
   console.log(label, obj);
-  const el = document.getElementById('player-debug');
-  if (!el) return;
-  el.style.display = 'block';
-  try { el.textContent += '\n' + label + ': ' + JSON.stringify(obj, null, 2); } catch (e) { el.textContent += '\n' + label + ': (unable to stringify)'; }
 }
 
+//Là một hàm bất đồng bộ (async), dùng để chuẩn bị dữ liệu và giao diện cho trình phát nhạc (Music Player).
 async function initPlayer() {
   const id = qs('id');
-  // Try to read from localStorage first
+  // Khi chạy chương trình, hãy kiểm tra xem có dữ liệu lưu sẵn trong localStorage không trước khi lấy từ nguồn khác.
   const stored = localStorage.getItem('currentSong');
   if (stored) {
     try {
@@ -75,7 +78,7 @@ async function initPlayer() {
   const song = normalize(raw);
   showDebug('normalized', song);
   renderSong(song);
-      // still fetch list for prev/next
+      // vẫn lấy danh sách cho nút trước/sau
       const listRes = await fetch(API_URL);
       const list = await listRes.json();
       const index = list.findIndex(x => String(x.id) === String(song.id || song.id));
@@ -88,7 +91,7 @@ async function initPlayer() {
     }
   }
 
-  // If no stored song, try to lookup in cached songList by id before fetching from API
+  // Nếu không có bài hát được lưu, hãy thử tra trong danh sách bài hát đã được lưu tạm (cache) theo id trước khi gọi dữ liệu từ API.
   if (!stored) {
     if (id) {
       const cachedList = localStorage.getItem('songList');
@@ -114,13 +117,13 @@ async function initPlayer() {
 
   if (!id) return showError('No song id provided and no stored song found.');
   try {
-    // fetch the single song
+    // Lấy dữ liệu của một bài hát duy nhất
     const res = await fetch(`${API_URL}/${encodeURIComponent(id)}`);
     const raw = await res.json();
     const song = normalize(raw);
     renderSong(song);
 
-    // also fetch full list to enable prev/next
+    // Cũng lấy toàn bộ danh sách bài hát để bật chức năng chuyển bài trước / sau.
     const listRes = await fetch(API_URL);
     const list = await listRes.json();
     const index = list.findIndex(x => String(x.id) === String(id));
@@ -132,6 +135,13 @@ async function initPlayer() {
   }
 }
 
+
+//Hàm này dùng để gắn các chức năng điều khiển cho trình phát nhạc — gồm:
+//Phát / tạm dừng bài hát
+//Chuyển bài trước / sau
+//Thanh điều khiển phát nhạc ở dưới (bottom bar): hiển thị tiến trình, thời gian, ảnh bìa, tiêu đề, nghệ sĩ, v.v.
+//Cập nhật tiến trình phát (progress bar) theo thời gian thực.
+//Tua bài hát (seek) khi người dùng click vào thanh tiến trình.
 function setupControls(list, currentIndex) {
   const audio = document.getElementById('player-audio');
   const btnPlay = document.getElementById('btn-play');
@@ -156,7 +166,7 @@ function setupControls(list, currentIndex) {
     });
   }
 
-  // bottom play sync
+  // Phát / tạm dừng bài hát
   if (bottomPlay && audio) {
     bottomPlay.addEventListener('click', () => {
       if (audio.paused) { audio.play(); bottomPlay.textContent = '▌▌'; if (btnPlay) btnPlay.textContent = 'Pause'; }
@@ -164,11 +174,11 @@ function setupControls(list, currentIndex) {
     });
   }
 
-  // prev/next from bottom bar
+  // Chuyển bài trước / sau
   if (bottomPrev) bottomPrev.addEventListener('click', () => { if (btnPrev) btnPrev.click(); });
   if (bottomNext) bottomNext.addEventListener('click', () => { if (btnNext) btnNext.click(); });
 
-  // show bottom bar when audio plays
+  // Thanh điều khiển phát nhạc ở dưới (bottom bar): hiển thị tiến trình, thời gian, ảnh bìa, tiêu đề, nghệ sĩ, v.v.
   if (audio) {
     audio.addEventListener('play', () => {
       if (bottomBar) bottomBar.style.display = 'flex';
@@ -178,7 +188,7 @@ function setupControls(list, currentIndex) {
       if (bottomPlay) bottomPlay.textContent = '▶';
     });
 
-    // update progress and times
+    // Cập nhật tiến trình phát (progress bar) theo thời gian thực.
     audio.addEventListener('timeupdate', () => {
       if (!audio.duration || !bottomProgress) return;
       const pct = (audio.currentTime / audio.duration) * 100;
@@ -187,7 +197,7 @@ function setupControls(list, currentIndex) {
       if (bottomDuration) bottomDuration.textContent = formatTime(audio.duration);
     });
 
-    // clicking on bottom progress to seek
+    // Tua bài hát (seek) khi người dùng click vào thanh tiến trình.
     if (bottomProgressWrap) {
       bottomProgressWrap.addEventListener('click', (ev) => {
         const rect = bottomProgressWrap.getBoundingClientRect();
@@ -201,17 +211,18 @@ function setupControls(list, currentIndex) {
   const goTo = async (idx) => {
     if (idx < 0 || idx >= list.length) return;
     const id = list[idx].id;
-    // navigate by replacing location with new id (simple and clear)
+    // Chuyển trang bằng cách thay id mới vào địa chỉ hiện tại (đơn giản và rõ ràng).
     window.location.href = `player.html?id=${encodeURIComponent(id)}`;
   };
 
   if (btnPrev) btnPrev.addEventListener('click', () => goTo(currentIndex - 1));
   if (btnNext) btnNext.addEventListener('click', () => goTo(currentIndex + 1));
 
-  // update play button on audio end
+  // Cập nhật nút phát khi kết thúc âm thanh
   if (audio) audio.addEventListener('ended', () => { if (btnPlay) btnPlay.textContent = 'Play'; });
 }
 
+//formatTime(s): chuyển giây sang định dạng phút:giây.
 function formatTime(s) {
   if (!s || isNaN(s)) return '0:00';
   const sec = Math.floor(s % 60).toString().padStart(2, '0');
@@ -219,7 +230,7 @@ function formatTime(s) {
   return `${min}:${sec}`;
 }
 
-// Initialize when DOM ready
+// Khởi tạo player: đảm bảo initPlayer() chạy khi trang đã load xong.
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initPlayer);
 else initPlayer();
 

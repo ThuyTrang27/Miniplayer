@@ -41,10 +41,15 @@ body {
   padding: 0 25px;
 }
 .icon-homepage,
-.icon-bell,
 .icon-user {
   margin-right: 25px;
   margin-top: 1px;
+}
+.icon-bell,
+.icon-setting {
+  margin-right: 12px;
+  margin-top: 0;
+  vertical-align: middle;
 }
 .user {
   position:relative;
@@ -75,7 +80,10 @@ body {
   margin-top: 4px;
 }
 .bell-setting {
-  margin-left: 120px;
+  margin-left: 70px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .content {
   overflow-y: auto;
@@ -135,7 +143,7 @@ body {
   flex-direction: row;
 
 }
-.music-section2 {
+/* .music-section2 {
     width: 93%;
     height: 350px;
     background-color: #545455;
@@ -151,7 +159,7 @@ body {
     margin: 20px;
     padding: 10px;
     
-}
+} */
 .type-section {
   display: flex;
   flex-direction: row;

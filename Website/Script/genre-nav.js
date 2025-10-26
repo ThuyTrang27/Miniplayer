@@ -112,4 +112,63 @@ document.addEventListener("DOMContentLoaded", () => {
       }, 350);
     });
   });
+
+  // chuyển trang cho bên Admin
+  const admin = document.querySelectorAll(".change-adminpage");
+  admin.forEach(el => {
+    // tránh lỗi nếu el không hợp lệ
+    if (!el) return;
+    el.addEventListener("click", () => {
+      // hiệu ứng fade-out (tùy chọn)
+      document.body.style.transition = "opacity 0.35s";
+      document.body.style.opacity = 0;
+      setTimeout(() => {
+        window.location.href = "Homepage_admin.html";
+      }, 350);
+    });
+  });
+
+ const element9 = document.querySelectorAll(".change-songpage");
+  element9.forEach(el => {
+    // tránh lỗi nếu el không hợp lệ
+    if (!el) return;
+    el.addEventListener("click", () => {
+      // hiệu ứng fade-out (tùy chọn)
+      document.body.style.transition = "opacity 0.35s";
+      document.body.style.opacity = 0;
+      setTimeout(() => {
+        window.location.href = "Manager_song.html";
+      }, 350);
+    });
+  });
+
+  const element10 = document.querySelectorAll(".change-userpage");
+  element10.forEach(el => {
+    // tránh lỗi nếu el không hợp lệ
+    if (!el) return;
+    el.addEventListener("click", () => {
+      // hiệu ứng fade-out (tùy chọn)
+      document.body.style.transition = "opacity 0.35s";
+      document.body.style.opacity = 0;
+      setTimeout(() => {
+        window.location.href = "Manager_user.html";
+      }, 350);
+    });
+  });
+
+  const element11 = document.querySelectorAll(".change-logout");
+  element11.forEach(el => {
+    // tránh lỗi nếu el không hợp lệ
+    if (!el) return;
+    el.addEventListener("click", () => {
+      // hiệu ứng fade-out (tùy chọn)
+      document.body.style.transition = "opacity 0.35s";
+      document.body.style.opacity = 0;
+      setTimeout(() => {
+        window.location.href = "Homepage.html";
+      }, 350);
+    });
+  });
 }); 
+
+

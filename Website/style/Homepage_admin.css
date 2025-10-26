@@ -1,0 +1,126 @@
+/* Reset cơ bản */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Container chính */
+.admin-container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+  position: fixed;      /* 🔥 Giữ cố định vị trí */
+  top: 0;
+  left: 0;
+  width: 220px;         /* hoặc tùy bạn */
+  height: 100vh;        /* Chiều cao bằng toàn màn hình */
+  background-color: #1e1e1e; /* màu nền tối */
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  z-index: 1000;        /* đảm bảo nằm trên các phần khác */
+}
+
+.sidebar .logo img {
+  width: 100px;
+  margin-bottom: 20px;
+}
+.sidebar .logo h2 {
+    font-size: 20px;
+    margin-bottom: 30px;
+    cursor: pointer;
+}
+
+.sidebar .menu li { 
+    list-style: none; 
+    padding: 12px 10px; 
+    margin-bottom: 5px; 
+    cursor: pointer; 
+    border-radius: 5px; 
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    transition: 0.3s; 
+} 
+.sidebar .menu li.active, 
+.sidebar .menu li:hover { 
+    background-color: #333;
+ }
+
+/* Main content */
+.main-content {
+    flex: 1;
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    margin-left: 220px; /* bằng với width của sidebar */
+    padding: 20px;
+}
+
+/* Top bar */
+.topbar {
+    display: flex;
+    /* justify-content:; */
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 220px; /* Bằng với chiều rộng của sidebar */
+    z-index: 1000;
+}
+
+.topbar h1 {
+    font-size: 24px;
+}
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 18px;
+    margin-left: 60%;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Content section */
+.content {
+    padding: 70px 80px;
+    margin-top: 70px;
+    margin-left: 100px;
+}
+
+.content h2,
+.content h4 {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-family:cursive;
+    
+}
+.content h2 {
+    font-size: 50px;
+}
+.content h4 {
+    font-size: 30px;
+}
+.content img {
+    margin-top: 30px;
+    width: 500px;
+    height: 300px;
+    margin-left: 20%;
+}

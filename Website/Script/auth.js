@@ -28,6 +28,7 @@ function createAuthModal() {
 
 function showAuth(type) {
   // type: 'signup' or 'signin'
+  //Đăng nhập
   const modal = document.getElementById('auth-modal') || createAuthModal();
   const title = modal.querySelector('#auth-title');
   const fields = modal.querySelector('#auth-fields');
@@ -64,12 +65,14 @@ function showAuth(type) {
           <h2>Đăng Nhập Vào MiniPlayer</h2>
             <input type="text" id="username" name="email" placeholder="Tên đăng nhập hoặc Email" required>
             <input type="password" id="password" name="password" placeholder="Mật khẩu" required>
+            <input type="text" id="role" name="role" placeholder="Vai trò" required>
             <div style="margin-top:6px"><button type="submit" id="auth-submit">Đăng nhập</button></div>
           <div class="extra"><p>Bạn chưa có tài khoản? <a href="Sign-up.html">Đăng ký nhanh</a></p></div>
         </div>
       </div>
     `;
   }
+  //Đăng ký
   // set submit button text depending on type
   const submitBtn = modal.querySelector('#auth-submit');
   if (submitBtn) submitBtn.textContent = (type === 'signup') ? 'Đăng ký' : 'Đăng nhập';
@@ -95,24 +98,44 @@ function showAuth(type) {
         modal.style.display = 'none';
         renderAccountState();
       } else {
-        // signin: fetch users and match (accept username or email)
-        const res = await fetch(USER_API);
-        if (!res.ok) throw new Error('Failed to fetch users');
-        const list = await res.json();
-        const found = list.find(u => ((u.email === data.email) || (u.username === data.email)) && (u.password === data.password));
-        if (!found) { err.style.display='block'; err.textContent = 'Invalid credentials'; return; }
-        localStorage.setItem('currentUser', JSON.stringify(found));
-        modal.style.display = 'none';
-        renderAccountState();
-        window.location.href = "Homepage.html";
-      }
+          // 🔐 Đăng nhập: kiểm tra user hoặc admin
+          const res = await fetch(USER_API);
+          if (!res.ok) throw new Error('Failed to fetch users');
+          const list = await res.json();
+
+          // Tìm user theo email/username và password
+          const found = list.find(u =>
+            ((u.email === data.email) || (u.username === data.email)) &&
+            (u.password === data.password)
+          );
+
+          if (!found) {
+            err.style.display = 'block';
+            err.textContent = 'Sai tên đăng nhập hoặc mật khẩu!';
+            return;
+          }
+
+          // 👉 Lưu thông tin user đăng nhập
+          localStorage.setItem('currentUser', JSON.stringify(found));
+          modal.style.display = 'none';
+          renderAccountState();
+
+          // ⚙️ Phân quyền:
+          if (found.role === 'admin') {
+            // Nếu là admin → chuyển đến trang quản lý
+            window.location.href = "../code/Homepage_admin.html";
+          } else {
+            // Nếu là user thường → chuyển đến trang chính
+            window.location.href = "../code/Homepage.html";
+          }
+        }
     } catch (err2) {
       console.error(err2);
       err.style.display='block'; err.textContent = 'An error occurred. See console.';
     }
   };
 }
-
+// Kiểm tra người dùng đã đăng nhập hay chưa và cập nhật giao diện
 function renderAccountState() {
   const raw = localStorage.getItem('currentUser');
   const headerHome = document.querySelector('.home');
@@ -173,6 +196,7 @@ function renderAccountState() {
 }
 
 // Attach click listeners to any sign-in / sign-up elements
+//Gắn sự kiện khi click vào đăng nhập hoặc đăng ký
 function attachAuthLinks() {
   document.querySelectorAll('.user.text').forEach(elm => {
     const txt = elm.textContent.trim().toLowerCase();

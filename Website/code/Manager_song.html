@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MiniPlayer Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="../style/Manager_song.css">
+</head>
+<body>
+    <div class="admin-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="../img/logo_white.png" alt="MiniPlayer Logo">
+                <h2 class="change-adminpage">Admin Panel</h2>
+            </div>
+            <ul class="menu">
+                <li class="active change-songpage"><i class="fa-solid fa-music"></i> Songs</li>
+                <li class="change-userpage"><i class="fa-solid fa-users"></i> Users</li>
+                <li class="change-logout"><i class="fa-solid fa-right-from-bracket"></i> Logout</li>
+            </ul>
+        </aside>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <header class="topbar">
+                <h1>Dashboard</h1>
+               <div class="topbar-right"> 
+                <i class="fa-solid fa-bell"></i> 
+                <div class="admin-profile"> 
+                <i class="fa-solid fa-user"></i> Admin 
+            </div> 
+        </div>
+            </header>
+
+            <section class="content">
+                               <h2>Song Management</h2>
+                <button class="btn-add">+ Add New Song</button>
+                <table class="song-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Artist</th>
+                            <th>Genre</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Âm thầm bên em</td>
+                            <td>Sơn Tùng M-TP</td>
+                            <td>V-Pop</td>
+                            <td>
+                                <button class="btn-edit"><i class="fa-solid fa-pen"></i></button>
+                                <button class="btn-delete"><i class="fa-solid fa-trash"></i></button>
+                            </td>
+                        </tr>
+                         <!-- Thêm dòng bài hát khác ở đây  -->
+                    </tbody>
+                </table> 
+                 <!-- Add Song Form (ẩn mặc định) -->
+                <div class="modal-overlay" id="modal-overlay"></div>
+                <div class="add-song-form" id="add-song-form">
+                    <h3>Add New Song</h3>
+                    <form id="songForm">
+                        <input type="hidden" id="songId">
+                        <div class="form-group">
+                            <label>Title:</label>
+                            <input type="text" id="songName" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Artist:</label>
+                            <input type="text" id="songArtist" required>
+                        </div>
+                        <div class="form-group">
+                            <label>URL:</label>
+                            <input type="url" id="songUrl" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Image URL:</label>
+                            <input type="url" id="songImg" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Duration:</label>
+                            <input type="text" id="songTimes" placeholder="MM:SS">
+                        </div>
+                        <div class="form-group">
+                            <label>Genre:</label>
+                            <input type="text" id="songGenre" placeholder="V-Pop / K-Pop...">
+                        </div>
+                        <div class="form-group">
+                            <label>Likes:</label>
+                            <input type="number" id="songLikes" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label>Year:</label>
+                            <input type="number" id="songYear" value="2025">
+                        </div>
+                        <div class="form-group">
+                            <label>Count:</label>
+                            <input type="number" id="songCount" value="1">
+                        </div>
+                        <div class="form-group">
+                            <label>Date:</label>
+                            <input type="text" id="songDate" placeholder="DD/MM/YYYY">
+                        </div>
+
+                        <div class="form-buttons">
+                            <button type="submit" class="btn-save">Save</button>
+                            <button type="button" class="btn-cancel">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="../Script/admin_songs.js"></script>
+    <script src="../Script/genre-nav.js"></script>
+</body>
+</html>
