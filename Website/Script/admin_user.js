@@ -51,9 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const res = await fetch(API_URL);
             const users = await res.json();
-
             userTable.innerHTML = "";
-
             users.forEach(user => {
                 const tr = document.createElement("tr");
                 tr.innerHTML = `

@@ -42,11 +42,11 @@ function renderSong(song) {
   if (audio) {
     audio.src = song.Url || '';
     audio.style.display = song.Url ? '' : 'none';
-    // update bottom bar cover/title/artist if present
+    // Cập nhật thanh dưới cùng cho bìa, tiêu đề và nghệ sĩ nếu có.
     const bottomCover = document.getElementById('bottom-cover'); if (bottomCover) bottomCover.src = song.Img || '';
     const bottomTitle = document.getElementById('bottom-title'); if (bottomTitle) bottomTitle.textContent = song.Name || '';
     const bottomArtist = document.getElementById('bottom-artist'); if (bottomArtist) bottomArtist.textContent = song.Artist || '';
-    // when metadata loads, set duration display
+    // Khi siêu dữ liệu (metadata) được tải, đặt hiển thị thời lượng.
     audio.addEventListener('loadedmetadata', () => {
       const bottomDuration = document.getElementById('bottom-duration');
       if (bottomDuration && audio.duration && !isNaN(audio.duration)) bottomDuration.textContent = formatTime(audio.duration);
@@ -135,6 +135,13 @@ async function initPlayer() {
   }
 }
 
+//formatTime(s): chuyển giây sang định dạng phút:giây.
+function formatTime(s) {
+  if (!s || isNaN(s)) return '0:00';
+  const sec = Math.floor(s % 60).toString().padStart(2, '0');
+  const min = Math.floor(s / 60);
+  return `${min}:${sec}`;
+}
 
 //Hàm này dùng để gắn các chức năng điều khiển cho trình phát nhạc — gồm:
 //Phát / tạm dừng bài hát
@@ -155,9 +162,9 @@ function setupControls(list, currentIndex) {
   const bottomProgressWrap = document.getElementById('bottom-progress-wrap');
   const bottomCurrent = document.getElementById('bottom-current');
   const bottomDuration = document.getElementById('bottom-duration');
-  const bottomCover = document.getElementById('bottom-cover');
-  const bottomTitle = document.getElementById('bottom-title');
-  const bottomArtist = document.getElementById('bottom-artist');
+  // const bottomCover = document.getElementById('bottom-cover');
+  // const bottomTitle = document.getElementById('bottom-title');
+  // const bottomArtist = document.getElementById('bottom-artist');
 
   if (btnPlay && audio) {
     btnPlay.addEventListener('click', () => {
@@ -222,13 +229,7 @@ function setupControls(list, currentIndex) {
   if (audio) audio.addEventListener('ended', () => { if (btnPlay) btnPlay.textContent = 'Play'; });
 }
 
-//formatTime(s): chuyển giây sang định dạng phút:giây.
-function formatTime(s) {
-  if (!s || isNaN(s)) return '0:00';
-  const sec = Math.floor(s % 60).toString().padStart(2, '0');
-  const min = Math.floor(s / 60);
-  return `${min}:${sec}`;
-}
+
 
 // Khởi tạo player: đảm bảo initPlayer() chạy khi trang đã load xong.
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initPlayer);
@@ -242,7 +243,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const commentList = document.getElementById("comment-list");
   const loginStatus = document.getElementById("login-status");
 
-  // 🧠 Lấy thông tin người dùng từ localStorage (nếu có)
+  // Lấy thông tin người dùng từ localStorage (nếu có): chuyen doi tu Json sang doi tuong
   const userData = JSON.parse(localStorage.getItem("currentUser"));
 
   // Cập nhật trạng thái hiển thị

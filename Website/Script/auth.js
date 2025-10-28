@@ -1,8 +1,9 @@
-// Simple auth helper: sign-up, sign-in using mock API and update UI
 const USER_API = 'https://68e491038e116898997c170f.mockapi.io/User';
 
 function el(html) {
-  const tpl = document.createElement('div'); tpl.innerHTML = html.trim(); return tpl.firstChild;
+  const tpl = document.createElement('div'); 
+  tpl.innerHTML = html.trim(); 
+  return tpl.firstChild;
 }
 
 function createAuthModal() {
@@ -43,7 +44,8 @@ function showAuth(type) {
     fields.appendChild(el('<div><label>Password</label><br><input name="password" type="password" required></div>'));
   } else {
     title.textContent = 'Sign in';
-    // inject scoped signin form (uses name="email" but accepts username or email on server-side matching)
+    // Chèn biểu mẫu đăng nhập có phạm vi (sử dụng name="email" nhưng chấp nhận khớp với 
+    // tên đăng nhập hoặc email ở phía server).
     fields.innerHTML = `
       <style id="auth-signin-css"> 
         #auth-modal .login-container{height:100vh;background:transparent;display:flex;align-items:center;justify-content:center}
@@ -73,13 +75,13 @@ function showAuth(type) {
     `;
   }
   //Đăng ký
-  // set submit button text depending on type
+  // Đặt văn bản của nút submit tùy thuộc vào loại (type).
   const submitBtn = modal.querySelector('#auth-submit');
   if (submitBtn) submitBtn.textContent = (type === 'signup') ? 'Đăng ký' : 'Đăng nhập';
   modal.style.display = 'flex';
   const close = modal.querySelector('#auth-close');
   close.onclick = () => { modal.style.display = 'none'; };
-  // inner close button inside panel (if present)
+  // Nút đóng bên trong bảng điều khiển (nếu có).
   const innerClose = modal.querySelector('.auth-inner-close');
   if (innerClose) innerClose.onclick = () => { modal.style.display = 'none'; };
 
@@ -90,15 +92,20 @@ function showAuth(type) {
     const data = Object.fromEntries(new FormData(form).entries());
     try {
       if (type === 'signup') {
-        // create user via POST
-        const res = await fetch(USER_API, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data) });
-        if (!res.ok) throw new Error('Signup failed');
+        // Tạo người dùng thông qua phương thức POST.
+        const res = await fetch(USER_API, { 
+          method: 'POST', 
+          headers: {'Content-Type':'application/json'}, 
+          body: JSON.stringify(data) // data là dữ liệu người dùng từ form
+        });
+        if (!res.ok) throw new Error('Signup failed');//Kiểm tra res.ok là bắt buộc khi dùng:"Nếu server không phản hồi thành công thì báo lỗi đăng ký thất bại."
+        //  fetch — giúp bắt lỗi server sớm, tránh crash và UX rõ ràng!
         const user = await res.json();
-        localStorage.setItem('currentUser', JSON.stringify(user));
+        localStorage.setItem('currentUser', JSON.stringify(user));// Lưu ở local để sử dụng cho trình duyệt
         modal.style.display = 'none';
         renderAccountState();
       } else {
-          // 🔐 Đăng nhập: kiểm tra user hoặc admin
+          // Đăng nhập: kiểm tra user hoặc admin
           const res = await fetch(USER_API);
           if (!res.ok) throw new Error('Failed to fetch users');
           const list = await res.json();
@@ -115,12 +122,12 @@ function showAuth(type) {
             return;
           }
 
-          // 👉 Lưu thông tin user đăng nhập
+          // Lưu thông tin user đăng nhập
           localStorage.setItem('currentUser', JSON.stringify(found));
           modal.style.display = 'none';
           renderAccountState();
 
-          // ⚙️ Phân quyền:
+          // Phân quyền:
           if (found.role === 'admin') {
             // Nếu là admin → chuyển đến trang quản lý
             window.location.href = "../code/Homepage_admin.html";
@@ -140,7 +147,7 @@ function renderAccountState() {
   const raw = localStorage.getItem('currentUser');
   const headerHome = document.querySelector('.home');
   if (!headerHome) return;
-  // ensure styles for account area are injected once
+  // Đảm bảo các kiểu dáng cho khu vực tài khoản chỉ được chèn một lần.
   if (!document.getElementById('auth-css')) {
     const s = document.createElement('style'); s.id = 'auth-css';
     s.textContent = `
@@ -152,11 +159,11 @@ function renderAccountState() {
     `;
     document.head.appendChild(s);
   }
-  // remove existing account area if any
+  // Xóa khu vực tài khoản hiện có nếu tồn tại.
   const existing = document.getElementById('account-area'); if (existing) existing.remove();
   const container = document.createElement('div');
   container.id = 'account-area';
-  // display as inline-flex so avatar, name and logout sit on one line
+  // Hiển thị dưới dạng inline-flex để avatar, tên và nút đăng xuất nằm trên cùng một dòng.
   container.style.display = 'inline-flex';
   container.style.alignItems = 'center';
   container.style.gap = '8px';
@@ -164,7 +171,7 @@ function renderAccountState() {
 
   if (raw) {
     const user = JSON.parse(raw);
-    // hide sign-in/sign-up text and their small icon siblings (the white icons)
+    // Ẩn văn bản đăng nhập/đăng ký và các biểu tượng nhỏ của chúng (các biểu tượng màu trắng)
     document.querySelectorAll('.user.text').forEach(n => {
       if (n.textContent.trim().toLowerCase().includes('sign')) {
         n.style.display = 'none';
@@ -186,7 +193,7 @@ function renderAccountState() {
       window.location.href = "Homepage.html";;
     };
   } else {
-    // show sign-in/sign-up text and icons again
+    // Hiển thị lại văn bản và biểu tượng của "Sign in"/"Sign up".
     document.querySelectorAll('.user.text').forEach(n => {
       n.style.display = 'inline-block';
       const prev = n.previousElementSibling;
@@ -201,7 +208,7 @@ function attachAuthLinks() {
   document.querySelectorAll('.user.text').forEach(elm => {
     const txt = elm.textContent.trim().toLowerCase();
     if (txt.includes('sign-up') || txt.includes('signup') || txt.includes('sign up')) {
-      // navigate to dedicated sign-up page if present
+      // Điều hướng đến trang đăng ký riêng nếu có.
       elm.style.cursor='pointer'; elm.onclick = () => { window.location.href = 'Sign-up.html'; };
     }
     if (txt.includes('sign-in') || txt.includes('signin') || txt.includes('sign in')) {

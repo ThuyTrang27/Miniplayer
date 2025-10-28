@@ -137,15 +137,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             if (id) {
-                // 👉 CẬP NHẬT
+                //  CẬP NHẬT
                 await fetch(`${API_URL}/${id}`, {
                     method: "PUT",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(songData)
                 });
-                alert("✅ Song updated successfully!");
+                alert("✅  Song updated successfully!");
             } else {
-                // 👉 THÊM MỚI
+                // THÊM MỚI
                 await fetch(API_URL, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
