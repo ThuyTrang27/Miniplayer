@@ -63,7 +63,7 @@ function showAuth(type) {
         <div class="login-inner">
           <!-- inner close button (top-right of the panel) -->
           <button class="auth-inner-close" aria-label="Close" style="position:absolute;top:10px;right:10px;border:none;background:transparent;color:#fff;font-size:18px;cursor:pointer">✖</button>
-          <img src="../img/logo_white.png" alt="Logo" class="logo">
+          <img src="./logo_white.png" alt="Logo" class="logo">
           <h2>Đăng Nhập Vào MiniPlayer</h2>
             <input type="text" id="username" name="email" placeholder="Tên đăng nhập hoặc Email" required>
             <input type="password" id="password" name="password" placeholder="Mật khẩu" required>

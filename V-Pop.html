@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MiniPlayer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="../style/Songs.css">
+    <link rel="stylesheet" href="./Homepage.css">
 </head>
-<body data-page="songs" id="songs">    
+<body data-page="playlist" id="playlist">    
      <div class="menu-bar">
                 <div class="logo">
-                    <img src="../img/logo_wedsite.png" alt="" class="TC" style=" cursor: pointer;">
+                    <img src="./logo_wedsite.png" alt="" class="TC" style=" cursor: pointer;">
                 </div>
                 <div class="menu-music">
                     <div class="menu list-icon">
@@ -32,7 +32,7 @@
     <div class="content">           
         <div class="header">
             <div class="home">
-                <i class="fa-solid fa-house icon-homepage icon TC" style=" cursor: pointer;"></i>
+                <i class="fa-solid fa-house icon-homepage icon TC"  style=" cursor: pointer;"></i>
                 <div class="box-search">
                     <input type="text" class="input-homepage" placeholder="Tìm kiếm bài hát...">
                     <i class="fa-solid fa-magnifying-glass icon-search"></i>
@@ -52,25 +52,20 @@
                     <div class="Nav-bar">
                         <div class="list-page">
                             <div class="TC li">Home</div>
-                            <div class="BH li" style="color: red;">Songs</div>
-                            <div class="PL li">Playlist</div>
+                            <div class="BH li">Songs</div>
+                            <div class="PL li" style="color: red;">Playlist</div>
                             <div class="AB li">About</div>
                         </div>
                     </div>
                     <div class="music-section">
-                        <h2>All</h2>
-                        <div id="all" class="song-container"></div>
+                        <h2>V-pop</h2>
+                        <div id="V-Pop" class="song-container"></div>
+                        </div>
                     </div>
-                  
-                        <!-- <div class="music-section">
-                        <h2>Songs</h2>
-                        <div id="Song" class="song-container"></div>
-                        </div> -->
-                </div>
             </div>
     
     <div class="footer">
-        <img src="../img/logo_wedsite.png" alt="">
+        <img src="./logo_wedsite.png" alt="">
         <div class="full-text">
         <div class="text-content">
             <h3 class="text-name">MiniPlayer</h3>
@@ -90,9 +85,10 @@
         </div>
     </div>
     </div>
-    <script src="../Script/index.js"></script>
-    <script src="../Script/auth.js"></script>
-    <script src="../Script/genre-nav.js"></script>
+    <script src="index.js"></script>
+    <script src="./auth.js"></script>
+    <script src="./genre-nav.js"></script>
+    <script src="./player.js"></script>
 </body>
 </html>
 
